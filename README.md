@@ -1,2 +1,2 @@
-# signbot
-Bot for the ODYSEA Discord server.
+# <img src=https://odysea.us.to/assets/static/woodsignload.gif width="auto" height="32px"> SignBot
+Bot for the ODYSEA Discord server. 
