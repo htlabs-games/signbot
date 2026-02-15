@@ -9,8 +9,8 @@ from os import getenv
 from signbot.bot import SignBot
 
 CHANNEL_ID = getenv("CHANNEL_ID")
-BASE_URL = getenv("BASE_URL")
-ANNOUNCEMENTS_URL = BASE_URL + "/announcements/announcements.shtml"
+SERVER_URL = getenv("SERVER_URL")
+ANNOUNCEMENTS_URL = SERVER_URL + "/announcements/announcements.shtml"
 CHECK_FREQ = getenv("CHECK_FREQ") or 60 # announcements check frequency in seconds
 
 class Announcements(commands.Cog):
@@ -44,7 +44,7 @@ class Announcements(commands.Cog):
 
             # format for discord
             if len(content) > 1400:  
-                content = content[:1400] + f"\n...[read more]({BASE_URL}/announcements)..."
+                content = content[:1400] + f"\n...[read more]({SERVER_URL}/announcements)..."
 
             return first_h1, content
         except Exception as e:
