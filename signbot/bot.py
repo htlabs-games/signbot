@@ -9,7 +9,7 @@ class SignBot(commands.Bot):
         super().__init__(
             prefix=commands.when_mentioned_or(prefix),
             intents=discord.Intents.messages(),
-            help_command=None
+            allowed_mentions=discord.AllowedMentions.roles()
         )
 
     async def on_ready(self):
