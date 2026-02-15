@@ -9,8 +9,8 @@ from os import getenv
 from signbot.bot import SignBot
 from signbot.paginator import Paginator
 
-BASE_URL = getenv("BASE_URL")
-NEWEST_URL = BASE_URL + "/api/get-frontpage/?data-category=newest"
+SERVER_URL = getenv("SERVER_URL")
+NEWEST_URL = SERVER_URL + "/api/get-frontpage/?data-category=newest"
 LIMIT = 30
 
 class Levels(commands.Cog):
@@ -38,13 +38,13 @@ class Levels(commands.Cog):
                     embed = discord.Embed(
                         title=level["name"][:256] or "Untitled Level",
                         description=level["description"][:4096] or "No description provided",
-                        url=f"{BASE_URL}/aroundtown/play?l={level["id"]}",
+                        url=f"{SERVER_URL}/aroundtown/play?l={level["id"]}",
                         colour=discord.Colour.teal()
                     )
 
                     embed.set_author(name=level["author"])
                     if "thumbnail" in level:
-                        embed.set_image(url=BASE_URL + level["thumbnail"])
+                        embed.set_image(url=SERVER_URL + level["thumbnail"])
 
                     embeds.append(embed)
 

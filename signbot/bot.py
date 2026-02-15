@@ -7,9 +7,9 @@ from signbot import cogs
 class SignBot(commands.Bot):
     def __init__(self, prefix: str = "!"):
         super().__init__(
-            prefix=commands.when_mentioned_or(prefix),
-            intents=discord.Intents.messages(),
-            allowed_mentions=discord.AllowedMentions.roles()
+            command_prefix=commands.when_mentioned_or(prefix),
+            intents=discord.Intents(32768),
+            allowed_mentions=discord.AllowedMentions(roles=True, replied_user=False)
         )
 
     async def on_ready(self):
@@ -19,13 +19,7 @@ class SignBot(commands.Bot):
         for name in cogs:
             try:
                 await self.load_extension(f"signbot.cogs.{name}")
-            except Exception:
+            except Exception as e:
                 logging.warning(f"Cog {name} failed to load.")
             finally:
-                logging.log(f"Cog {name} loaded")
-
-        try:
-            commands = await self.tree.sync()
-            logging.error(f"Reloaded {len(commands)} commands.")
-        except discord.HTTPException as e:
-            logging.error(e)
+                logging.info(f"Cog {name} loaded")
