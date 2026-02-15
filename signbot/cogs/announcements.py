@@ -9,7 +9,8 @@ from os import getenv
 from signbot.bot import SignBot
 
 CHANNEL_ID = getenv("CHANNEL_ID")
-URL = getenv("ANNOUNCEMENTS_URL") or "https://www.odysea.us.to/announcements/announcements.shtml"
+BASE_URL = getenv("BASE_URL")
+ANNOUNCEMENTS_URL = BASE_URL + "/announcements/announcements.shtml"
 CHECK_FREQ = getenv("CHECK_FREQ") or 60 # announcements check frequency in seconds
 
 class Announcements(commands.Cog):
@@ -19,7 +20,7 @@ class Announcements(commands.Cog):
 
     async def fetch_page(self):
         try:
-            resp = requests.get(getenv("ANNOUNCEMENTS_URL"), timeout=10)
+            resp = requests.get(ANNOUNCEMENTS_URL, timeout=10)
             resp.raise_for_status()
             soup = BeautifulSoup(resp.text, "html.parser")
 
@@ -43,7 +44,7 @@ class Announcements(commands.Cog):
 
             # format for discord
             if len(content) > 1400:  
-                content = content[:1400] + "\n...[read more](https://odysea.us.to/announcements)..."
+                content = content[:1400] + f"\n...[read more]({BASE_URL}/announcements)..."
 
             return first_h1, content
         except Exception as e:
