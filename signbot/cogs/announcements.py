@@ -69,7 +69,7 @@ class Announcements(commands.Cog):
                     msg = f"<@&1405506815847956540>\n# {first_h1}\n\n{content}" if content else f"**{first_h1}**"
                     await channel.send(msg)
 
-            await asyncio.sleep(CHECK_FREQ)
+            await asyncio.sleep(int(CHECK_FREQ))
 
 async def setup(bot: SignBot):
     cog = Announcements(bot)
