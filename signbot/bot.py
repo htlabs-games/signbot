@@ -5,10 +5,10 @@ from discord.ext import commands
 from signbot import cogs
 
 class SignBot(commands.Bot):
-    def __init__(self, prefix: str = "!"):
+    def __init__(self, prefix: str = "="):
         super().__init__(
             command_prefix=commands.when_mentioned_or(prefix),
-            intents=discord.Intents(32768),
+            intents=discord.Intents(33281),
             allowed_mentions=discord.AllowedMentions(roles=True, replied_user=False)
         )
 

@@ -16,7 +16,7 @@ LIMIT = 30
 class Levels(commands.Cog):
     def __init__(self, bot: SignBot):
         self.bot = bot
-        self.http_session = aiohttp.ClientSession(timeout=30)
+        self.http_session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(30))
 
     @commands.command(
         name="newest",
@@ -26,13 +26,13 @@ class Levels(commands.Cog):
         await ctx.channel.typing()
 
         try:
-            async with self.http_session.get(NEWEST_URL) as response:
+            async with self.http_session.get(NEWEST_URL, headers={"Accept-Encoding": "gzip, deflate"}) as response:
                 content = await response.json()
                 if not "newest" in content:
                     raise ValueError("Received data is invalid.")
                 
                 levels: list[dict] = content["newest"][:LIMIT]
-                embeds = list[discord.Embed] = []
+                embeds = []
 
                 for level in levels:
                     embed = discord.Embed(
@@ -43,13 +43,13 @@ class Levels(commands.Cog):
                     )
 
                     embed.set_author(name=level["author"])
-                    if "thumbnail" in level:
-                        embed.set_image(url=SERVER_URL + level["thumbnail"])
+                    if level["thumbnail"] is not None:
+                        embed.set_image(url=(SERVER_URL + level["thumbnail"]))
 
                     embeds.append(embed)
 
                 paginator = Paginator(show_counter=True)
-                paginator.start(ctx, embeds)
+                await paginator.start(ctx, embeds)
                 
         except ValueError as e:
             ctx.reply(content="The server returned invalid data. Try again in a moment.")

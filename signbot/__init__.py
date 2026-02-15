@@ -16,5 +16,5 @@ Licensed under the MIT License
 Copyright (c) 2026 htlabs.games
 """
 
-cogs = ["announcements"]
+cogs = ["announcements", "levels"]
 version = "2.0.0"

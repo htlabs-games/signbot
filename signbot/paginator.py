@@ -8,14 +8,14 @@ class Paginator(View):
     """
 
     def __init__(self, timeout: int = 300, show_counter: bool = True):
-        super().__init__(timeout)
+        super().__init__(timeout=timeout)
 
         self.current = 0
         self.pages = None
         self.total = 0
 
-        self.previous_button = Button(emoji=discord.PartialEmoji(name="\U000025c0"))
-        self.next_button = Button(emoji=discord.PartialEmoji(name="\U000025b6"))
+        self.previous_button = Button(style=discord.ButtonStyle.primary,emoji=discord.PartialEmoji(name="\U000025c0"))
+        self.next_button = Button(style=discord.ButtonStyle.primary, emoji=discord.PartialEmoji(name="\U000025b6"))
         self.ephemeral = False
         self.ctx = None
         self.message = None
@@ -59,6 +59,7 @@ class Paginator(View):
         if self.counter:
             self.counter.label = f"{self.current + 1}/{self.total}"
 
+        await interaction.response.defer()
         await self.message.edit(embed=self.pages[self.current], view=self)
 
     async def next(self, interaction: discord.Interaction):
@@ -72,4 +73,12 @@ class Paginator(View):
         if self.counter:
             self.counter.label = f"{self.current + 1}/{self.total}"
 
+        await interaction.response.defer()
         await self.message.edit(embed=self.pages[self.current], view=self)
+
+    async def on_timeout(self):
+        for child in self.children:
+            if isinstance(child, Button):
+                child.disabled = True
+
+        return await super().on_timeout()
