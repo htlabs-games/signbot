@@ -7,7 +7,7 @@ class Paginator(View):
     a paginator i guess
     """
 
-    def __init__(self, timeout: int = 300, show_counter: bool = True):
+    def __init__(self, timeout: int = 180, show_counter: bool = True):
         super().__init__(timeout=timeout)
 
         self.current = 0
@@ -80,5 +80,6 @@ class Paginator(View):
         for child in self.children:
             if isinstance(child, Button):
                 child.disabled = True
-
+        
+        await self.message.edit(embed=self.pages[self.current], view=self)
         return await super().on_timeout()
