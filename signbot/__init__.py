@@ -9,12 +9,12 @@
             ||  ||
             ||__||
 
-# SignBot Discord Bot   
+# SignBot Discord Bot
 Visit - ODYSEA.us.to
 
 Licensed under the MIT License
 Copyright (c) 2026 htlabs.games
 """
 
-cogs = ["announcements", "levels"]
+cogs = ["admin", "announcements", "levels"]
 version = "2.0.0"

@@ -2,6 +2,7 @@ import discord
 import logging
 
 from discord.ext import commands
+from os import getenv
 from signbot import cogs
 
 class SignBot(commands.Bot):
@@ -11,6 +12,8 @@ class SignBot(commands.Bot):
             intents=discord.Intents(33281),
             allowed_mentions=discord.AllowedMentions(roles=True, replied_user=False)
         )
+
+        self.owner_ids = [int(x) for x in getenv("OWNER_IDS").split(",")]
 
     async def on_ready(self):
         assert self.user
@@ -23,3 +26,11 @@ class SignBot(commands.Bot):
                 logging.warning(f"Cog {name} failed to load.")
             finally:
                 logging.info(f"Cog {name} loaded")
+
+    async def on_command_error(self, ctx: commands.Context, exception: commands.errors.CommandError):
+        if isinstance(exception, (commands.errors.NotOwner, commands.errors.CommandNotFound)):
+            return
+
+        if isinstance(exception, commands.errors.MissingRequiredArgument):
+            return await ctx.reply(content=
+                f"Missing argument for this command: `{exception.param.name}`")
